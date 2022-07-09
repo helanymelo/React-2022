@@ -10,9 +10,12 @@ function App() {
     <section className='container'>
       <h3>{people.length} birthday today</h3>
       <List people={people}/>
-      <button onClick={()=>setPeople([])}>CLEAR</button>
+
+      {people.length === 0 ? <button onClick={()=>setPeople(data)}>REFRESH</button>
+      : <button onClick={()=>setPeople([])}>CLEAR</button>  }
     </section>
   );
 }
+
 
 export default App;
