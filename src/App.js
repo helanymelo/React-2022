@@ -12,7 +12,7 @@ function App() {
       <List people={people}/>
 
       {people.length === 0 ? <button onClick={()=>setPeople(data)}>REFRESH</button>
-      : <button onClick={()=>setPeople([])}>CLEAR</button>  }
+      : <button onClick={()=>setPeople([])}>CLEAR</button>}
     </section>
   );
 }
