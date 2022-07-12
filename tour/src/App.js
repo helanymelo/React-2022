@@ -10,8 +10,17 @@ function App() {
   const [tours, setTours]=useState([])
 
 
+ const deleteTrip = (id) =>{
+  const newListTour =  tours.filter((tour)=> tour.id !== id)
+  setTours(newListTour)
+  alert('Viagem deletada com sucesso')
+  console.log(newListTour)
+ }
+
+ 
+
  const getTrips =() =>{
-  axios.get('https://course-api.com/react-tours-project')
+  axios.get(url)
   .then((res)=>{
     console.log(res)
     setTours(res.data)
@@ -34,7 +43,9 @@ function App() {
   }
   return (
     <main className="App">
-      <Tours tours={tours}/>      
+      {tours.length ?   <Tours tours={tours} deleteTrip={deleteTrip}/>
+       : <h1>Nada por aqui!!!</h1>}
+          
     </main>
   );
 }
