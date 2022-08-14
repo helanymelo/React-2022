@@ -1,5 +1,6 @@
-import React from 'react'
+
 import {useState, useEffect} from 'react'
+import { useAuth } from '../../hooks/useAuth'
 import styles from '../Register/Register.module.css'
 
 
@@ -10,46 +11,47 @@ const Register = ()=> {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
 
-const handleSubmit = (e) =>{
+    const {createUser, error: authError, loading} = useAuth()
+
+const handleSubmit = async (e) =>{
     e.preventDefault()
-    setDisplayName('')
-    setEmail('')
-    setPassword('')
-    setConfirmPassword('')
+    
     setError('')
+
     const user= {
         displayName,
         email,
         password,
     
     }
-    if(password !==confirmPassword){
+    if(password !== confirmPassword){
         setError('As senhas precisam ser iguais')
         return
     }
+        const res = await createUser(user)
 
-        console.log(user)
+        console.log(res)
 }
 
-
-
-
-
-
+    useEffect(()=>{
+        if(authError){
+            setError(authError)
+        }
+    },[authError])
 
 
 console.log(displayName, email, password, confirmPassword)
+
   return (
     <div className={styles.register}>
         <h2>Cadastre-se para postar</h2>
         <h3>Crie seu usuário e compartilhe suas histórias!!!</h3>
-        <form onSubmit={handleSubmit}>
-       
+        <form onSubmit={handleSubmit}>       
             <label>
                 <span>Nome:</span>
                 <input
                     type='text'
-                    name= 'displayName'
+                    name='displayName'
                     required
                     placeholder='Nome do usuário'
                     value={displayName}
@@ -85,8 +87,9 @@ console.log(displayName, email, password, confirmPassword)
                     onChange={(e)=>setConfirmPassword(e.target.value)}
                 />               
             </label>
-            <button type='submit'className='btn'>Enviar</button>
-            {error && <p className='error'>{error}</p>}
+                {!loading && <button className='btn'>Enviar</button>}
+                {loading && <button className='btn' disabled>Aguarde...</button>}
+                {error && <p className='error'>{error}</p>}
         </form>
     </div>
   )

@@ -1,3 +1,5 @@
+import {db} from '../firebase/config'
+
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -22,9 +24,42 @@ export const useAuth = () =>{
         }
     }
 
-   
+    const createUser = async (data)=>{
+        checkIfCancelled()
+        setLoading(true)
 
+       try{
+            const {user} = await createUserWithEmailAndPassword(
+                auth,
+                data.email,
+                data.password
 
+            )
 
+            await updateProfile(user, {
+                displayName: data.displayName
+            })
+               
+       }catch(error){
+            console.log(error.message)
+            console.log(typeof error.message)
+       }
+
+       let systemErrorMessage
+       if(error.message.includes('Password'))
+
+       setLoading(false)
+    }
+
+    useEffect(()=>{
+        return()=>setCancelled(true)
+    },[])
+
+    return{
+        auth,
+        createUser,
+        error,
+        loading
+    }
 
 }
