@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
 import NavBar from './components/NavBar/NavBar';
@@ -40,11 +40,12 @@ function App() {
         <AuthProvider value={user}>
           <Routes>
             <Route path='/' element={<Home/>}/>
+            
+            <Route path='/login' element={<Login/> }/>
+            <Route path='/cadastro' element={<Register/> }/>
+            <Route path='/post/criar' element={user ? <CreatePost/> : <Navigate to='/login'/> }/>
+            <Route path='/dashboard' element={user ?  <Dashboard/> : <Navigate to='/login'/>}/>
             <Route path='/about' element={<About/>}/>
-            <Route path='/login' element={<Login/>}/>
-            <Route path='/cadastro' element={<Register/>}/>
-            <Route path='/post/criar' element={<CreatePost/>}/>
-            <Route path='/dashboard' element={<Dashboard/>}/>
           </Routes>
         </AuthProvider>
       </div>
