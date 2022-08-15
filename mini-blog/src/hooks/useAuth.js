@@ -16,6 +16,7 @@ export const useAuth = () =>{
     const[loading, setLoading]=useState(null)
 
     const[cancelled, setCancelled]=useState(false)
+
     const auth = getAuth()
 
     function checkIfCancelled(){
@@ -26,7 +27,8 @@ export const useAuth = () =>{
 
     const createUser = async (data)=>{
         checkIfCancelled()
-        setLoading(true)
+        setLoading(false)
+        
 
        try{
             const {user} = await createUserWithEmailAndPassword(
@@ -39,27 +41,40 @@ export const useAuth = () =>{
             await updateProfile(user, {
                 displayName: data.displayName
             })
-               
-       }catch(error){
+
+
+            return user;    
+
+            }catch(error){
             console.log(error.message)
             console.log(typeof error.message)
-       }
+            
+            let systemErrorMessage
+                
+            if(error.message.includes('password')){
+                systemErrorMessage('A senha precisa conter 6 caracteres')
+            }else if(error.message.includes('email-already')){
 
-       let systemErrorMessage
-       if(error.message.includes('Password'))
+            }else{
+                systemErrorMessage('Ocorreu um erro')
+            }
+
+            console.log(systemErrorMessage)
+            setError(systemErrorMessage)
+       }
+    
 
        setLoading(false)
     }
 
     useEffect(()=>{
         return()=>setCancelled(true)
-    },[])
+    },[])    
 
     return{
         auth,
         createUser,
         error,
-        loading
+        loading,
     }
-
 }
