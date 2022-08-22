@@ -27,7 +27,8 @@ export const useAuth = () =>{
 
     const createUser = async (data)=>{
         checkIfCancelled()
-        setLoading(false)
+        setLoading(true)
+        setError(null)
         
 
        try{
@@ -41,8 +42,7 @@ export const useAuth = () =>{
             await updateProfile(user, {
                 displayName: data.displayName
             })
-
-
+            setLoading(false)
             return user;    
 
             }catch(error){
@@ -64,7 +64,7 @@ export const useAuth = () =>{
        }
     
 
-       setLoading(false)
+
        
     }
 

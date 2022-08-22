@@ -1,67 +1,85 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
-import styles from '../NavBar/NavBar.module.css'
-import { useAuth } from '../../hooks/useAuth'
-import { useAuthValue } from '../Context/AuthContext'
 
-const NavBar = () =>{
-    const {user} = useAuth()
-    const {logout} = useAuth()
-    return<nav className={styles.navbar}>
-        <NavLink to='/' className={styles.brand}>
-            Mini-Blog
-        </NavLink>
-            <ul className={styles.links_list}>
-                <li>
-                    <NavLink to='/' className={({isActive})=>(isActive ? styles.active : ' ')}>
-                        Home
-                    </NavLink>               
-                </li>
+import { useAuth} from "../../hooks/useAuth";
 
-                {!user && (
-                    <>
-                        <li>
-                            <NavLink to='/login' className={({isActive})=>(isActive ? styles.active : ' ')}>
-                            Login
-                            </NavLink>               
-                        </li>
+import { useAuthValue } from "../Context/AuthContext";
 
-                        <li>
-                            <NavLink to='/cadastro' className={({isActive})=>(isActive ? styles.active : ' ')}>
-                                Cadastre-se!
-                            </NavLink>               
-                        </li>
-                    </>
-            )}
-          
-                <>
-                    <li>
-                        <NavLink to='/post/criar' className={({isActive})=>(isActive ? styles.active : ' ')}>
-                            Novo Post
-                        </NavLink>               
-                    </li>
+import styles from "./NavBar.module.css"
+const Navbar = () => {
+  const { logout } = useAuth();
+  const { user } = useAuthValue();
 
-                    <li>
-                        <NavLink to='/dashboard' className={({isActive})=>(isActive ? styles.active : ' ')}>
-                        Dashboard
-                        </NavLink>               
-                    </li>     
-                </>
-        
-
+  return (
+    <nav className={styles.navbar}>
+      <NavLink className={styles.brand} to="/">
+        Mini <span>Blog</span>
+      </NavLink>
+      <ul className={styles.links_list}>
+        <li>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? styles.active : "")}
+          >
+            Home
+          </NavLink>
+        </li>
+        {!user && (
+          <>
             <li>
-                <NavLink to='/about' className={({isActive})=>(isActive ? styles.active : ' ')}>
-                    Sobre
-                </NavLink>
+              <NavLink
+                to="/login"
+                className={({ isActive }) => (isActive ? styles.active : "")}
+              >
+                Entrar
+              </NavLink>
             </li>
-            {user && (<li>
-                    <button onClick={logout}>SAIR</button>
-                </li>)}
-                
-     
-        </ul>
-        
+            <li>
+              <NavLink
+                to="/register"
+                className={({ isActive }) => (isActive ? styles.active : "")}
+              >
+                Cadastrar
+              </NavLink>
+            </li>
+          </>
+        )}
+        {user && (
+          <>
+            <li>
+              <NavLink
+                to="/posts/create"
+                className={({ isActive }) => (isActive ? styles.active : "")}
+              >
+                Novo post
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) => (isActive ? styles.active : "")}
+              >
+                Dashboard
+              </NavLink>
+            </li>
+          </>
+        )}
+        <li>
+          <NavLink
+            to="/about"
+            className={({ isActive }) => (isActive ? styles.active : "")}
+          >
+            Sobre
+          </NavLink>
+        </li>
+        {user && (
+          <li>
+            <button onClick={logout}>Sair</button>
+          </li>
+        )}
+      </ul>
     </nav>
-}
+  );
+};
 
-export default NavBar
+export default Navbar
